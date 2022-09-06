@@ -10,7 +10,7 @@ const App: React.FC = () => {
   const [cardList, setCardList] = useState([...DataCardList]);
 
   const onDragEnd = (result: DropResult) => {
-    const { destination, source, draggableId } = result;
+    const { destination, source, draggableId, type } = result;
     if (!destination) {
       return;
     }
@@ -23,7 +23,15 @@ const App: React.FC = () => {
 
     const subList = JSON.parse(JSON.stringify(cardList));
 
-    if (destination.droppableId === source.droppableId) {
+    if (type === "CARD") {
+      subList.splice(source.index, 1);
+      subList.splice(
+        destination.index,
+        0,
+        cardList.find((cardItem) => cardItem.id === draggableId)
+      );
+      setCardList(subList);
+    } else if (destination.droppableId === source.droppableId) {
       const indexItemRemove = subList.findIndex(
         (subItem: ICard) => subItem.id === source.droppableId
       );
@@ -131,7 +139,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="card-list" direction="horizontal" type="TASK">
+        <Droppable droppableId="card-list" direction="horizontal" type="CARD">
           {(provided) => (
             <div
               className="card-list flex h-full w-full"

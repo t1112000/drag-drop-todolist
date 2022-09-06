@@ -41,13 +41,11 @@ const CardList: React.FC<CardListProps> = (props) => {
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
-          className="card-list px-10 shadow-lg py-4 flex flex-col min-w-[300px]"
+          {...provided.dragHandleProps}
+          className="card-list px-10 shadow-lg py-4 flex flex-col min-w-[300px] cursor-pointer"
         >
           <div className="relative flex items-center justify-center">
-            <h2
-              {...provided.dragHandleProps}
-              className="font-bold text-red-500 text-lg cursor-pointer text-center h-10"
-            >
+            <h2 className="font-bold text-red-500 text-lg text-center h-10">
               {name}
             </h2>
 
@@ -61,7 +59,7 @@ const CardList: React.FC<CardListProps> = (props) => {
             )}
           </div>
 
-          <Droppable droppableId={id} direction="vertical">
+          <Droppable droppableId={id} direction="vertical" type="ITEM">
             {(_provided) => (
               <div
                 className="card-items flex-1 border border-blue-500 px-2 mb-2 overflow-y-auto"
