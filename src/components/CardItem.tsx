@@ -5,10 +5,11 @@ interface CardItemProps {
   id: string;
   name: string;
   dragIndex: number;
+  handleUpdateCardItem: () => void;
 }
 
 const CardItem: React.FC<CardItemProps> = (props) => {
-  const { id, name, dragIndex } = props;
+  const { id, name, dragIndex, handleUpdateCardItem } = props;
 
   return (
     <Draggable draggableId={id} index={dragIndex}>
@@ -18,6 +19,7 @@ const CardItem: React.FC<CardItemProps> = (props) => {
           ref={provided.innerRef}
           {...provided.dragHandleProps}
           {...provided.draggableProps}
+          onClick={handleUpdateCardItem}
         >
           {name}
         </div>

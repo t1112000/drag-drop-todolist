@@ -59,29 +59,33 @@ const App: React.FC = () => {
 
   const handleAddItem = (id: string) => {
     const subList = JSON.parse(JSON.stringify(cardList));
+    const text = prompt("Please enter your name column", "Todo");
 
-    setCardList(
-      subList.map((subItem: any) => {
-        if (subItem.id === id) {
-          return {
-            ...subItem,
-            items: [
-              ...subItem.items,
-              {
-                id: new Date().getTime().toString(),
-                name: `Item ${subItem.items.length + 1}`,
-              },
-            ],
-          };
-        }
+    if (text) {
+      setCardList(
+        subList.map((subItem: any) => {
+          if (subItem.id === id) {
+            return {
+              ...subItem,
+              items: [
+                ...subItem.items,
+                {
+                  id: new Date().getTime().toString(),
+                  name: text,
+                },
+              ],
+            };
+          }
 
-        return subItem;
-      })
-    );
+          return subItem;
+        })
+      );
+    }
   };
 
   const handleAddColumn = () => {
-    let text = prompt("Please enter your name column", "Todo");
+    const text = prompt("Please enter your name column", "Todo");
+
     if (text) {
       setCardList([
         ...cardList,
@@ -91,8 +95,36 @@ const App: React.FC = () => {
           items: [],
         },
       ]);
-    } else {
-      text = prompt("Please enter your name column", "Todo");
+    }
+  };
+
+  const handleUpdateCardItem = (
+    cardId: string,
+    cardItemId: string,
+    name: string
+  ) => {
+    const subList = JSON.parse(JSON.stringify(cardList));
+    const text = prompt("Please enter your name column", name);
+
+    if (text) {
+      setCardList(
+        subList.map((subItem: any) => {
+          if (subItem.id === cardId) {
+            return {
+              ...subItem,
+              items: subItem.items.map((item: ICard) => {
+                if (item.id === cardItemId) {
+                  return { ...item, name: text };
+                }
+
+                return item;
+              }),
+            };
+          }
+
+          return subItem;
+        })
+      );
     }
   };
 
@@ -116,6 +148,7 @@ const App: React.FC = () => {
                   isLastItem={cardList.length - 1 === index}
                   handleAddItem={handleAddItem}
                   handleAddColumn={handleAddColumn}
+                  handleUpdateCardItem={handleUpdateCardItem}
                 />
               ))}
 

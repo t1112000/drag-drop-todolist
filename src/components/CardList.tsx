@@ -16,6 +16,11 @@ export interface CardListProps {
   isLastItem: boolean;
   handleAddItem: (id: string) => void;
   handleAddColumn: () => void;
+  handleUpdateCardItem: (
+    cardId: string,
+    cardItemId: string,
+    name: string
+  ) => void;
 }
 
 const CardList: React.FC<CardListProps> = (props) => {
@@ -27,6 +32,7 @@ const CardList: React.FC<CardListProps> = (props) => {
     handleAddItem,
     isLastItem,
     handleAddColumn,
+    handleUpdateCardItem,
   } = props;
 
   return (
@@ -58,7 +64,7 @@ const CardList: React.FC<CardListProps> = (props) => {
           <Droppable droppableId={id} direction="vertical">
             {(_provided) => (
               <div
-                className="card-items flex-1 border border-blue-500 px-2 mb-2"
+                className="card-items flex-1 border border-blue-500 px-2 mb-2 overflow-y-auto"
                 ref={_provided.innerRef}
                 {..._provided.droppableProps}
               >
@@ -68,6 +74,9 @@ const CardList: React.FC<CardListProps> = (props) => {
                     name={item.name}
                     dragIndex={index}
                     key={item.id}
+                    handleUpdateCardItem={() =>
+                      handleUpdateCardItem(id, item.id, item.name)
+                    }
                   />
                 ))}
 
